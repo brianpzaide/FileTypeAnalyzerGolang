@@ -1,0 +1,9 @@
+type: edu
+custom_name: stage1
+files:
+- name: test/MainTest.java
+  visible: false
+- name: main.go
+  visible: true
+- name: doc.pdf
+  visible: true

@@ -1,0 +1,13 @@
+type: edu
+custom_name: stage2
+files:
+- name: test/Clue.java
+  visible: false
+- name: test/ContainsSearch.java
+  visible: false
+- name: test/MainTest.java
+  visible: false
+- name: test/NaiveSearch.java
+  visible: false
+- name: main.go
+  visible: true

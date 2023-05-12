@@ -1,0 +1,11 @@
+type: edu
+custom_name: stage4
+files:
+- name: test/Clue.java
+  visible: false
+- name: test/MainTest.java
+  visible: false
+- name: main.go
+  visible: true
+- name: main.exe
+  visible: true

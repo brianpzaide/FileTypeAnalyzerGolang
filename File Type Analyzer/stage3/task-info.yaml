@@ -1,0 +1,9 @@
+type: edu
+custom_name: stage3
+files:
+- name: test/Clue.java
+  visible: false
+- name: test/MainTest.java
+  visible: false
+- name: main.go
+  visible: true
