@@ -119,7 +119,7 @@ func main() {
 		filePath := fileName
 		go func() {
 			defer wgWorkers.Done()
-			var msg string
+			var ft string
 			match, err := isFileType(filePath, fileType, "--KMP")
 			if err != nil {
 				msgCh <- fmt.Sprintf("%s: %s", "Error", err.Error())
@@ -127,11 +127,11 @@ func main() {
 			}
 
 			if !match {
-				msg = fmt.Sprintf("%s: %s", filepath.Base(filePath), "Unknown file type")
+				ft = "Unknown file type"
 			} else {
-				msg = fmt.Sprintf("%s: %s", filepath.Base(filePath), outputIfMatch)
+				ft = outputIfMatch
 			}
-			msgCh <- msg
+			msgCh <- fmt.Sprintf("%s: %s", filepath.Base(filePath), ft)
 
 		}()
 	}
