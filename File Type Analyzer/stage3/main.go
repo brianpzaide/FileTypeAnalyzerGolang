@@ -104,7 +104,9 @@ func main() {
 	var wgWorkers, wgChannelCloser sync.WaitGroup
 	wgWorkers.Add(len(filePaths))
 	// main goroutine is the only one that throws exception,
-	//I wanted all the other goroutines to finish before any exception happens
+	// I wanted all the other goroutines to finish before any exception happens
+	// I want the main goroutine to start processing the messages when all the
+	// worker goroutines have completed their task and the msgCh has been closed.
 	wgChannelCloser.Add(1)
 
 	go func() {
@@ -113,7 +115,6 @@ func main() {
 		wgChannelCloser.Done()
 	}()
 
-	// start := time.Now()
 	for _, fileName := range filePaths {
 		filePath := fileName
 		go func() {
@@ -143,6 +144,4 @@ func main() {
 			fmt.Println(msg)
 		}
 	}
-	// elapsed := time.Since(start)
-	// fmt.Printf("It took %f seconds\n", elapsed.Seconds())
 }
