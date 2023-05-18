@@ -165,20 +165,9 @@ func main() {
 	filePaths := getAllFileNames(folderName)
 	// this introduces some async behaviour
 	msgCh := make(chan string, len(filePaths))
-	var wgWorkers, wgChannelCloser sync.WaitGroup
+	var wgWorkers sync.WaitGroup
 	wgWorkers.Add(len(filePaths))
-	// main goroutine is the only one that throws exception,
-	//I wanted all the other goroutines to finish before any exception happens
-	wgChannelCloser.Add(1)
 
-	// starting a new goroutine that closes the msgCh
-	go func() {
-		wgWorkers.Wait()
-		close(msgCh)
-		wgChannelCloser.Done()
-	}()
-
-	// start := time.Now()
 	for _, fileName := range filePaths {
 		filePath := fileName
 		go func() {
@@ -200,7 +189,8 @@ func main() {
 		}()
 	}
 
-	wgChannelCloser.Wait()
+	wgWorkers.Wait()
+	close(msgCh)
 	for msg := range msgCh {
 		if strings.HasPrefix(msg, "Error:") {
 			log.Fatal(msg[6:])
@@ -208,6 +198,4 @@ func main() {
 			fmt.Println(msg)
 		}
 	}
-	// elapsed := time.Since(start)
-	// fmt.Printf("It took %f seconds\n", elapsed.Seconds())
 }

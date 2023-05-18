@@ -101,19 +101,8 @@ func main() {
 	filePaths := getAllFileNames(folderName)
 	// this introduces some async behaviour
 	msgCh := make(chan string, len(filePaths))
-	var wgWorkers, wgChannelCloser sync.WaitGroup
+	var wgWorkers sync.WaitGroup // , wgChannelCloser sync.WaitGroup
 	wgWorkers.Add(len(filePaths))
-	// main goroutine is the only one that throws exception,
-	// I wanted all the other goroutines to finish before any exception happens
-	// I want the main goroutine to start processing the messages when all the
-	// worker goroutines have completed their task and the msgCh has been closed.
-	wgChannelCloser.Add(1)
-
-	go func() {
-		wgWorkers.Wait()
-		close(msgCh)
-		wgChannelCloser.Done()
-	}()
 
 	for _, fileName := range filePaths {
 		filePath := fileName
@@ -136,7 +125,8 @@ func main() {
 		}()
 	}
 
-	wgChannelCloser.Wait()
+	wgWorkers.Wait()
+	close(msgCh)
 	for msg := range msgCh {
 		if strings.HasPrefix(msg, "Error:") {
 			log.Fatal(msg[6:])
