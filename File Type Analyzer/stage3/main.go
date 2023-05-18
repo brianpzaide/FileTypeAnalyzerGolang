@@ -101,7 +101,7 @@ func main() {
 	filePaths := getAllFileNames(folderName)
 	// this introduces some async behaviour
 	msgCh := make(chan string, len(filePaths))
-	var wgWorkers sync.WaitGroup // , wgChannelCloser sync.WaitGroup
+	var wgWorkers sync.WaitGroup
 	wgWorkers.Add(len(filePaths))
 
 	for _, fileName := range filePaths {
